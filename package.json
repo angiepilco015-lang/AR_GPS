@@ -7,10 +7,10 @@
     "build": "vite",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "locar": "0.1.2",
-    "three": "^0.180.0"
-  },
+ "dependencies": {
+  "locar": "^0.2.12",
+  "three": "^0.181.0"
+},
   "devDependencies": {
     "vite": "^7.1.7"
   }
