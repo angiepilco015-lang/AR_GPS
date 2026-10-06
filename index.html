@@ -1,144 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnóstico GPS AR</title>
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <title>AR GPS - Laboratorio de Redes</title>
 
     <style>
+
+        html,
         body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        button {
-            padding: 15px;
-            margin: 5px;
-            font-size: 16px;
-        }
-
-        video {
+            margin: 0;
+            padding: 0;
             width: 100%;
-            margin-top: 20px;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
-        #info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #eeeeee;
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
         }
+
+        #interface {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+            pointer-events: none;
+        }
+
+        #startButton {
+            pointer-events: auto;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background: #2196f3;
+            color: white;
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            border-radius: 8px;
+        }
+
+        #gpsInfo {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        #legend {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 10;
+            padding: 10px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+        }
+
     </style>
+
 </head>
 
 <body>
 
-    <h2>Prueba de GPS y cámara</h2>
+    <canvas id="canvas"></canvas>
 
-    <button onclick="activarCamara()">
-        Activar cámara
-    </button>
+    <div id="interface">
 
-    <button onclick="obtenerGPS()">
-        Obtener ubicación
-    </button>
+        <button id="startButton">
+            INICIAR AR
+        </button>
 
-    <div id="info">
-        Esperando...
+        <div id="status">
+            Presiona INICIAR AR para comenzar.
+        </div>
+
+        <div id="gpsInfo">
+            Esperando ubicación...
+        </div>
+
     </div>
 
-    <video
-        id="video"
-        autoplay
-        playsinline>
-    </video>
+    <div id="legend">
 
-    <script>
+        Calibración:
+        rojo = Norte,
+        amarillo = Sur,
+        celeste = Oeste,
+        verde = Este.
 
-        async function activarCamara() {
+        <br>
 
-            const info =
-                document.getElementById("info");
+        Magenta = "Laboratorio de Redes".
 
-            try {
+    </div>
 
-                const stream =
-                    await navigator.mediaDevices.getUserMedia({
-                        video: {
-                            facingMode: {
-                                ideal: "environment"
-                            }
-                        }
-                    });
-
-                document.getElementById("video").srcObject =
-                    stream;
-
-                info.innerHTML =
-                    "✅ Cámara funcionando correctamente.";
-
-            }
-
-            catch(error) {
-
-                info.innerHTML =
-                    "❌ Error de cámara: "
-                    + error.name
-                    + "<br>"
-                    + error.message;
-            }
-        }
-
-
-        function obtenerGPS() {
-
-            const info =
-                document.getElementById("info");
-
-            if (!navigator.geolocation) {
-
-                info.innerHTML =
-                    "❌ Geolocalización no disponible.";
-
-                return;
-            }
-
-            info.innerHTML =
-                "Buscando ubicación...";
-
-
-            navigator.geolocation.getCurrentPosition(
-
-                function(position) {
-
-                    info.innerHTML =
-                        "✅ GPS funcionando"
-                        + "<br><br>Latitud: "
-                        + position.coords.latitude
-                        + "<br>Longitud: "
-                        + position.coords.longitude
-                        + "<br>Precisión: "
-                        + position.coords.accuracy
-                        + " metros";
-                },
-
-                function(error) {
-
-                    info.innerHTML =
-                        "❌ Error GPS: "
-                        + error.code
-                        + "<br>"
-                        + error.message;
-                },
-
-                {
-                    enableHighAccuracy: true,
-                    timeout: 20000,
-                    maximumAge: 0
-                }
-            );
-        }
-
-    </script>
+    <script type="module" src="/src/main.js"></script>
 
 </body>
+
 </html>
